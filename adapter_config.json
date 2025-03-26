@@ -1,0 +1,12 @@
+{
+  "peft_type": "LORA",
+  "task_type": "SEQ_CLS",
+  "base_model_name_or_path": "FacebookAI/roberta-base",
+  "target_modules": ["query", "key", "value"],
+  "lora_alpha": 32,
+  "lora_dropout": 0.01,
+  "r": 4,  
+  "bias": "none",
+  "modules_to_save": ["classifier"],
+  "inference_mode": true
+}
