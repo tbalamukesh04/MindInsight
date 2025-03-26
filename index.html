@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindInsight - AI-Powered Depression Self-Assessment</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #4CAF50;
+      --light-green: #8BC34A;
+      --dark-green: #2E7D32;
+      --accent-green: #A5D6A7;
+      --bg-green: #E8F5E9;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #FFFFFF;
+      color: #333;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(150deg, var(--bg-green) 15%, #FFFFFF 90%);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-green);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--dark-green);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .step-card {
+      border-left: 4px solid var(--primary-green);
+      transition: all 0.3s ease;
+    }
+    
+    .step-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .icon-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    .wavy-border {
+      position: relative;
+      padding-bottom: 100px;
+    }
+    
+    .wavy-border::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%23E8F5E9' opacity='.25'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' fill='%23E8F5E9' opacity='.5'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23E8F5E9' opacity='.75'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+      z-index: -1;
+    }
+
+    .funky-circle {
+      position: absolute;
+      border-radius: 50%;
+      background-color: var(--accent-green);
+      opacity: 0.2;
+      z-index: -1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .funky-text {
+      display: inline-block;
+      transform: rotate(-2deg);
+      color: var(--dark-green);
+    }
+
+    .funky-underline {
+      display: inline-block;
+      position: relative;
+    }
+
+    .funky-underline::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      bottom: -2px;
+      left: 0;
+      background: var(--light-green);
+      border-radius: 4px;
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease-out;
+    }
+
+    .funky-underline:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md py-4 fixed w-full z-10">
+    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+      <div class="flex items-center">
+        <i class="fas fa-brain text-3xl text-green-600 mr-2"></i>
+        <h1 class="text-2xl font-bold text-gray-800">Mind<span class="text-green-600">Insight</span></h1>
+      </div>
+      <div class="hidden md:flex space-x-6">
+        <a href="#how-it-works" class="text-gray-700 hover:text-green-600 transition duration-300">How It Works</a>
+        <a href="#privacy" class="text-gray-700 hover:text-green-600 transition duration-300">Privacy</a>
+        <a href="/questionnaire" class="btn-primary px-8 py-3 rounded-full text-white font-semibold text-lg text-center">
+          Get Started
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      <div class="md:hidden">
+        <button class="text-gray-700 focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient pt-28 pb-20 relative overflow-hidden">
+    <div class="funky-circle" style="width: 300px; height: 300px; top: 10%; left: 5%;"></div>
+    <div class="funky-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-1/2 mb-12 md:mb-0 animate__animated animate__fadeInLeft">
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Helping You <span class="funky-text">See</span> What You <span class="funky-underline">Feel</span></h1>
+          <p class="text-xl text-gray-600 mb-8">MindInsight uses AI-driven analysis to help you assess your emotional well-being. Answer a few carefully designed questions, and let our intelligent system provide insights into your mental state.</p>
+          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="/questionnaire" class="btn-primary px-8 py-3 rounded-full text-white font-semibold text-lg text-center">
+              Get Started
+              <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            <a href="#how-it-works" class="px-8 py-3 rounded-full border-2 border-green-500 text-green-600 font-semibold text-lg text-center hover:bg-green-50 transition duration-300">
+              Learn More
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2 animate__animated animate__fadeInRight">
+          <img src="https://i.imghippo.com/files/idnr3831FCA.jpg" alt="Person reflecting peacefully" class="rounded-lg shadow-2xl transform hover:scale-105 transition duration-500 max-w-full h-auto" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="py-16 bg-white">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="text-center mb-16 animate-on-scroll">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">How <span class="funky-underline">MindInsight</span> Works</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Our AI-powered platform helps you understand your mental wellbeing through a simple three-step process.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="step-card bg-white p-6 rounded-lg shadow-lg animate-on-scroll">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <i class="fas fa-clipboard-list text-2xl text-green-600"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center">Answer the Questions</h3>
+          <p class="text-gray-600 text-center">Respond to a set of carefully structured prompts designed to understand your emotional state.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card bg-white p-6 rounded-lg shadow-lg animate-on-scroll" data-delay="200">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <i class="fas fa-robot text-2xl text-green-600 icon-pulse"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center">AI-Powered Analysis</h3>
+          <p class="text-gray-600 text-center">Our RoBERTA model processes your responses using advanced natural language processing techniques.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card bg-white p-6 rounded-lg shadow-lg animate-on-scroll" data-delay="400">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <i class="fas fa-lightbulb text-2xl text-green-600"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-3 text-center">Receive Insights</h3>
+          <p class="text-gray-600 text-center">Get a thoughtful assessment of your emotional well-being with personalized guidance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Section -->
+  <section class="py-16 bg-green-50 wavy-border">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0 animate-on-scroll">
+          <img src="https://i.imghippo.com/files/AZar3961bQ.png" alt="AI technology visualization" class="rounded-lg shadow-lg max-w-full h-auto" />
+        </div>
+        <div class="md:w-1/2 md:pl-10 animate-on-scroll" data-delay="200">
+          <h2 class="text-3xl font-bold text-gray-800 mb-4">Powered by <span class="funky-text">Advanced</span> AI</h2>
+          <p class="text-gray-600 mb-6">MindInsight utilizes a fine-tuned RoBERTa model to analyze your responses. Our technology understands the nuances of language to detect patterns associated with depression.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-600 mt-1 mr-3"></i>
+              <span>Natural language processing to understand context and sentiment</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-600 mt-1 mr-3"></i>
+              <span>Trained on comprehensive mental health datasets</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-green-600 mt-1 mr-3"></i>
+              <span>Continuously improving through responsible AI practices</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy Section -->
+  <section id="privacy" class="py-16 bg-white">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="max-w-3xl mx-auto text-center animate-on-scroll">
+        <i class="fas fa-shield-alt text-4xl text-green-600 mb-4"></i>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Privacy is Our <span class="funky-underline">Priority</span></h2>
+        <p class="text-gray-600 mb-8">We understand that mental health is a deeply personal matter. That's why we've designed MindInsight with privacy at its core.</p>
+        
+        <div class="bg-green-50 p-6 rounded-lg shadow-md">
+          <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-left">
+            <div class="flex-1">
+              <div class="flex items-start mb-2">
+                <i class="fas fa-lock text-green-600 mt-1 mr-3"></i>
+                <h3 class="font-semibold">Secure & Confidential</h3>
+              </div>
+              <p class="text-sm text-gray-600">Your responses are processed securely and not stored after analysis.</p>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start mb-2">
+                <i class="fas fa-user-secret text-green-600 mt-1 mr-3"></i>
+                <h3 class="font-semibold">Anonymous Use</h3>
+              </div>
+              <p class="text-sm text-gray-600">No account required - use MindInsight without sharing personal information.</p>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start mb-2">
+                <i class="fas fa-ban text-green-600 mt-1 mr-3"></i>
+                <h3 class="font-semibold">No Data Sharing</h3>
+              </div>
+              <p class="text-sm text-gray-600">We never share your responses or results with third parties.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-green-600 text-white">
+    <div class="container mx-auto px-4 md:px-6 text-center">
+      <div class="max-w-3xl mx-auto animate-on-scroll">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to gain insight into your mind?</h2>
+        <p class="text-xl mb-8">Take the first step toward understanding your emotional well-being with our AI-powered self-assessment.</p>
+        <a href="/questionnaire" class="inline-block px-8 py-4 bg-white text-green-600 rounded-full font-bold text-lg shadow-lg hover:bg-gray-100 transition duration-300 transform hover:-translate-y-1">
+          Get Started Now
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+        <p class="mt-6 text-green-100">No account required. Free, private, and takes just a few minutes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-10">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+          <div class="flex items-center">
+            <i class="fas fa-brain text-2xl text-green-400 mr-2"></i>
+            <h2 class="text-xl font-bold">Mind<span class="text-green-400">Insight</span></h2>
+          </div>
+          <p class="text-gray-400 mt-2">AI-powered depression self-assessment</p>
+        </div>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-center md:text-left">
+          <div>
+            <h3 class="font-semibold mb-2">Links</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">Home</a></li>
+              <li><a href="#how-it-works" class="text-gray-400 hover:text-green-400 transition duration-300">How It Works</a></li>
+              <li><a href="#privacy" class="text-gray-400 hover:text-green-400 transition duration-300">Privacy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">Resources</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">Mental Health Resources</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">Crisis Support</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">Contact</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">Support</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">Feedback</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+        <p>&copy; 2025 MindInsight. All rights reserved.</p>
+        <p class="mt-2">This tool is not a substitute for professional medical advice, diagnosis, or treatment.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Animate on scroll functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.getAttribute('data-delay') || 0;
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, delay);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animatedElements.forEach(element => {
+        observer.observe(element);
+      });
+      
+      // Mobile menu toggle
+      const menuButton = document.querySelector('button');
+      const mobileMenu = document.createElement('div');
+      mobileMenu.className = 'fixed top-0 left-0 w-full h-full bg-white z-50 transform translate-x-full transition duration-300 ease-in-out';
+      mobileMenu.innerHTML = `
+        <div class="flex justify-end p-6">
+          <button class="text-gray-700 focus:outline-none">
+            <i class="fas fa-times text-2xl"></i>
+          </button>
+        </div>
+        <div class="flex flex-col items-center space-y-6 mt-10">
+          <a href="#how-it-works" class="text-xl text-gray-700 hover:text-green-600 transition duration-300">How It Works</a>
+          <a href="#privacy" class="text-xl text-gray-700 hover:text-green-600 transition duration-300">Privacy</a>
+          <a href="/questionnaire" class="px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 transform hover:-translate-y-1">Get Started</a>        </div>
+      `;
+      
+      document.body.appendChild(mobileMenu);
+      
+      menuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('translate-x-full');
+        mobileMenu.classList.toggle('translate-x-0');
+        document.body.classList.toggle('overflow-hidden');
+      });
+      
+      const closeButton = mobileMenu.querySelector('button');
+      closeButton.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+        mobileMenu.classList.remove('translate-x-0');
+        document.body.classList.remove('overflow-hidden');
+      });
+      
+      const mobileLinks = mobileMenu.querySelectorAll('a');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('translate-x-full');
+          mobileMenu.classList.remove('translate-x-0');
+          document.body.classList.remove('overflow-hidden');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
